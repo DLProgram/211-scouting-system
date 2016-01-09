@@ -23,13 +23,23 @@
         <a href="stats.php">Stats</a>
       </li>
 
-      <li <?php echo $name=="Graph" ? "class='active'": ""; ?>>
-        <a href="graph.php">Graph</a>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Graphs<span class="caret"><span></a>
+        <ul class="dropdown-menu">
+          <li <?php echo $name=="Team Data" ? "class='active'": ""; ?>>
+            <a href="graph.php">Team Data</a>
+          </li>
+          <li <?php echo $name=="All Teams" ? "class='active'": ""; ?>>
+            <a href="graph2.php">All Teams</a>
+          </li>
+        </ul>
       </li>
 
       <li <?php echo $name=="Leaderboard" ? "class='active'": ""; ?>>
         <a href="leaderboard.php">Leaderboard</a>
       </li>
+
+
       
       <?php
       if($color == "admin"){

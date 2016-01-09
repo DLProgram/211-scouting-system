@@ -51,7 +51,7 @@ $name="Stats"
       <h1>Stats</h1>
       <div id="space"></div>
       <table class='table table-striped'>
-        <tr><th>Team Number</th> <th>Auto</th> <th>Driver</th></tr>
+        <tr><th>Team Number</th> <th>Lift</th> <th>Lifted</th> <th>Auto</th> <th>Driver</th></tr>
         <?php
           foreach ($teams as $team_num) {
             $q = "SELECT * FROM `data` WHERE team_num='$team_num';";
@@ -62,7 +62,16 @@ $name="Stats"
             if(!$result){
               die("query failed");
             }
+            $liftcount=0;
+            $liftedcount=0;
+            $matchcount=mysqli_num_rows($result);
             while($row = mysqli_fetch_assoc($result)){
+              if ($row["lift"] == 1){
+                $liftcount++;
+              }
+              if ($row["lifted"] == 1){
+                $liftedcount++;
+              }
               $auto_val[] = $row["auto"];
               $drive_val[] = $row["drive"];
             }
@@ -72,6 +81,14 @@ $name="Stats"
             <a href='graph.php?team_number=$team_num'>
             $team_num
             </a>";
+            echo "</td>";
+
+            echo "<td>";
+            echo $matchcount == 0 ? "" : round($liftcount/$matchcount*100) . "% (".$liftcount."/".$matchcount.")";
+            echo "</td>";
+
+            echo "<td>";
+            echo $matchcount == 0 ? "" : round($liftedcount/$matchcount*100) . "% (".$liftedcount."/".$matchcount.")";
             echo "</td>";
 
             echo "<td>";

@@ -3,8 +3,6 @@ include("connect.php");
 include('lock.php'); 
 $name="Leaderboard"
 ?>
-
-
 <?php 
   $all_teams = [];
 
@@ -20,15 +18,13 @@ $name="Leaderboard"
   }
   $teams = array_unique($all_teams);
   sort($teams);
-?>
-<?php
   $q = "TRUNCATE TABLE leaderboard;";
   $result = mysqli_query($conn, $q);
 
   if(!$result){
     die("query failed");
   }
-
+  $count=0;
   foreach ($teams as $team_num) {
     $q = "SELECT * FROM `data` WHERE team_num='$team_num';";
     $result = mysqli_query($conn, $q);
@@ -37,36 +33,52 @@ $name="Leaderboard"
     $drive_val = [];
 
     if(!$result){
-      die("queryg failed");
+      die("query failed");
     }
+    $count=mysqli_num_rows($result);
+    $liftcount=0;
+    $liftedcount=0;
     while($row = mysqli_fetch_assoc($result)){
+      if($row["lift"] == 1){
+        $liftcount++;
+      }
+      if($row["lifted"] == 1){
+        $liftedcount++;
+      }
       $auto_val[] = $row["auto"];
       $drive_val[] = $row["drive"];
+      $count++;
     }
-
+    $lift_average = (int) $liftcount/$count*100;
+    $lifted_average = (int) $liftedcount/$count*100;
     $auto_average = (int) count($auto_val) == 0 ?  " " : array_sum($auto_val) / count($auto_val);
     $drive_average = (int) count($drive_val) == 0 ?  " " : array_sum($drive_val) / count($drive_val);
 
-    $q = "INSERT INTO leaderboard (team_num, auto, drive) VALUES ('$team_num', $auto_average, $drive_average);";
+    $q = "INSERT INTO leaderboard (team_num, auto, drive, lift, lifted) 
+    VALUES ('$team_num', $auto_average, $drive_average,$lift_average,$lifted_average);";
     $result = mysqli_query($conn, $q);
   }
 ?>
 <?php 
   if(isset($_GET["order"])){
     if($_GET["order"] == "auto"){
-      $ql = "SELECT * FROM leaderboard ORDER BY auto DESC";
+      $q = "SELECT * FROM leaderboard ORDER BY auto DESC";
     }elseif ($_GET["order"] == "drive") {
-      $ql = "SELECT * FROM leaderboard ORDER BY drive DESC";
+      $q = "SELECT * FROM leaderboard ORDER BY drive DESC";
     }elseif ($_GET["order"] == "team_num") {
-      $ql = "SELECT * FROM leaderboard ORDER BY team_num";
+      $q = "SELECT * FROM leaderboard ORDER BY team_num";
+    }elseif ($_GET["order"] == "lift") {
+      $q = "SELECT * FROM leaderboard ORDER BY lift DESC";
+    }elseif ($_GET["order"] == "lifted") {
+      $q = "SELECT * FROM leaderboard ORDER BY lifted DESC";
     }else{
-      $ql = "SELECT * FROM leaderboard ORDER BY drive DESC";
+      $q = "SELECT * FROM leaderboard ORDER BY drive DESC";
     }
   }else{
-    $ql = "SELECT * FROM leaderboard ORDER BY drive DESC";
+    $q = "SELECT * FROM leaderboard ORDER BY drive DESC";
   }
   
-  $resultl = mysqli_query($conn,$ql);
+  $result = mysqli_query($conn,$q);
 
 ?>
 
@@ -93,39 +105,23 @@ $name="Leaderboard"
     <div class="container" >
       <h1>Leaderboard</h1>
       <div id="space"></div>
-      
       <div class="row">
         <div class="col-md-2"><span style="font-size:200%;">Sort by:</span></div>
-        <div class="col-md-4"><a href="?order=team_num" type="button" class="btn btn-lg btn-warning">Team Number</a></div>
-        <div class="col-md-3"><a href="?order=auto" type="button" class="btn btn-lg btn-warning">Auto</a></div>
-        <div class="col-md-3"><a href="?order=drive" type="button" class="btn btn-lg btn-warning">Drive</a></div>
+        <div class="col-md-2"><a href="?order=team_num" type="button" class="btn btn-lg btn-warning">Team Number</a></div>
+
+        <div class="col-md-2"><a href="?order=lift" type="button" class="btn btn-lg btn-warning">Lift</a></div>
+        <div class="col-md-2"><a href="?order=lifted" type="button" class="btn btn-lg btn-warning">Lifted</a></div>
+
+        <div class="col-md-2"><a href="?order=auto" type="button" class="btn btn-lg btn-warning">Auto</a></div>
+        <div class="col-md-2"><a href="?order=drive" type="button" class="btn btn-lg btn-warning">Drive</a></div>
       </div>
-      <div id="top"></div>
+      <div id="space"></div>
 
       <table class='table table-striped'>
-        <!--
-        <tr>
-          <td>
-            <div class="col-md-4">
-              <a href="?order=team_num" type="button" class="btn btn-lg btn-warning">Team Number</a>
-            </div>
-          </td>
-          <td>
-            <div class="col-md-3">
-              <a href="?order=auto" type="button" class="btn btn-lg btn-warning">Auto</a>
-            </div>
-          </td>
-          <td>
-            <div class="col-md-3">
-              <a href="?order=drive" type="button" class="btn btn-lg btn-warning">Drive</a>
-            </div>
-          </td>
-        </tr>
-      -->
-        <tr><th>Team Number</th> <th>Auto</th> <th>Drive</th></tr>
+        <tr><th>Team Number</th> <th>Lift</th> <th>Lifted</th> <th>Auto</th> <th>Drive</th></tr>
         <?php 
           
-          while($row = mysqli_fetch_assoc($resultl)){
+          while($row = mysqli_fetch_assoc($result)){
             $team_number = $row["team_num"];
             echo "<tr>";
             echo "<td>";
@@ -133,6 +129,14 @@ $name="Leaderboard"
             <a href='graph.php?team_number=$team_number'>
             $team_number
             </a>";
+            echo "</td>";
+
+            echo "<td>";
+            echo $row["lift"]."%";
+            echo "</td>";
+
+            echo "<td>";
+            echo $row["lifted"]."%";
             echo "</td>";
 
             echo "<td>";
@@ -148,9 +152,8 @@ $name="Leaderboard"
 
         ?>
       </table>
-
+      <?php echo "Loop Count: ".$count?>
     </div>
-    <a href=""></a>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
   </body>
