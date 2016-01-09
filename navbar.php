@@ -14,12 +14,19 @@
       <li <?php echo $name=="Home" ? "class='active'": ""; ?>>
         <a href="index.php">Home</a>
       </li>
+      
       <li <?php echo $name=="Search" ? "class='active'": ""; ?>>
         <a href="search.php">Search</a>
       </li>
+
       <li <?php echo $name=="Stats" ? "class='active'": ""; ?>>
         <a href="stats.php">Stats</a>
       </li>
+
+      <li <?php echo $name=="Graph" ? "class='active'": ""; ?>>
+        <a href="graph.php">Graph</a>
+      </li>
+
       <li <?php echo $name=="Leaderboard" ? "class='active'": ""; ?>>
         <a href="leaderboard.php">Leaderboard</a>
       </li>

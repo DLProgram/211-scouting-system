@@ -1,7 +1,7 @@
 <?php 
 include("connect.php");
 include('lock.php'); 
-$name="User"
+$name="User";
 ?>
 
 <!DOCTYPE html>

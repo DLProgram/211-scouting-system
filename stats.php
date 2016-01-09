@@ -68,7 +68,10 @@ $name="Stats"
             }
             echo "<tr>";
             echo "<td>";
-            echo $team_num;
+            echo "
+            <a href='graph.php?team_number=$team_num'>
+            $team_num
+            </a>";
             echo "</td>";
 
             echo "<td>";

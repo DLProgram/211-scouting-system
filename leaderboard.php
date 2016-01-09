@@ -126,9 +126,13 @@ $name="Leaderboard"
         <?php 
           
           while($row = mysqli_fetch_assoc($resultl)){
+            $team_number = $row["team_num"];
             echo "<tr>";
             echo "<td>";
-            echo $row["team_num"];
+            echo "
+            <a href='graph.php?team_number=$team_number'>
+            $team_number
+            </a>";
             echo "</td>";
 
             echo "<td>";
@@ -146,7 +150,7 @@ $name="Leaderboard"
       </table>
 
     </div>
-
+    <a href=""></a>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
   </body>
