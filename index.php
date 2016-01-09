@@ -80,12 +80,12 @@
               $drive2 = 100-$drive;
 
               //team one query 
-              $q = "INSERT INTO data (match_num, team_num, lift, lifted, auto, drive, user) 
+              $q = "INSERT INTO data_tmp (match_num, team_num, lift, lifted, auto, drive, user) 
                   VALUES ({$match_number},'{$team_number}',{$lift},{$lifted},{$auto},{$drive},'{$login_session}')";
               $result = mysqli_query($conn, $q);
 
               //team two query
-              $q2 = "INSERT INTO data (match_num, team_num, lift, lifted, auto, drive, user) 
+              $q2 = "INSERT INTO data_tmp (match_num, team_num, lift, lifted, auto, drive, user) 
                   VALUES ({$match_number},'{$team_number2}',{$lift2},{$lifted2},{$auto2},{$drive2}, '{$login_session}')";
               $result2 = mysqli_query($conn, $q2);
 

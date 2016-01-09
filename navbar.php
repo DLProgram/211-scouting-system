@@ -45,7 +45,9 @@
       <!--User(only visible to admins)-->
       <?php
       if($color == "admin"){
-        echo "<li>
+        echo "<li ";
+        echo $name=="User" ? "class='active'": "";
+        echo ">
           <a href='user.php'>Users</a>
         </li>";
       }
@@ -53,8 +55,10 @@
 
       <?php
       if($color == "admin"){
-        echo "<li>
-          <a href='user.php'>Users</a>
+        echo "<li ";
+        echo $name=="Confirmation" ? "class='active'": "";
+        echo">
+          <a href='confirmation.php'>Confirmation</a>
         </li>";
       }
       ?>
@@ -71,7 +75,7 @@
             echo "'label label-warning'";
           }
         ?>
-        >Loged in as: <?php echo $login_session;?></span>
+        >Logged in as: <?php echo $login_session;?></span>
       </li>
       <li>
         <a href="logout.php">Log Out</a>
