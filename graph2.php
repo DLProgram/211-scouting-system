@@ -1,7 +1,7 @@
 <?php
   include("connect.php");
   include('lock.php'); 
-  $name="All Teams"
+  $name="Leaderboard Graph"
 ?>
 
 <?php 
@@ -161,8 +161,7 @@
     <?php include("navbar.php") ?>
     <div id="top"></div>
     <div class="container">
-      <h1>All Teams</h1>
-
+      <h1><?php echo $name?></h1>
       <div id="space"></div>
       <div class="row">
         <div class="col-md-2"><span style="font-size:200%;">Sort by:</span></div>

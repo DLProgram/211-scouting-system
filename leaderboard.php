@@ -4,6 +4,9 @@ include('lock.php');
 $name="Leaderboard"
 ?>
 <?php 
+  $time_start = microtime(true);
+  $loop_count=0;
+
   $all_teams = [];
 
   $q = $q = "SELECT * FROM `data`;";
@@ -15,6 +18,7 @@ $name="Leaderboard"
 
   while($row = mysqli_fetch_assoc($result)){
     $all_teams[] = $row["team_num"];
+    $loop_count++;
   }
   $teams = array_unique($all_teams);
   sort($teams);
@@ -24,7 +28,6 @@ $name="Leaderboard"
   if(!$result){
     die("query failed");
   }
-  $count=0;
   foreach ($teams as $team_num) {
     $q = "SELECT * FROM `data` WHERE team_num='$team_num';";
     $result = mysqli_query($conn, $q);
@@ -47,7 +50,7 @@ $name="Leaderboard"
       }
       $auto_val[] = $row["auto"];
       $drive_val[] = $row["drive"];
-      $count++;
+      $loop_count++;
     }
     $lift_average = (int) $liftcount/$count*100;
     $lifted_average = (int) $liftedcount/$count*100;
@@ -58,8 +61,8 @@ $name="Leaderboard"
     VALUES ('$team_num', $auto_average, $drive_average,$lift_average,$lifted_average);";
     $result = mysqli_query($conn, $q);
   }
-?>
-<?php 
+
+  //get data from leaderboard database
   if(isset($_GET["order"])){
     if($_GET["order"] == "auto"){
       $q = "SELECT * FROM leaderboard ORDER BY auto DESC";
@@ -77,8 +80,11 @@ $name="Leaderboard"
   }else{
     $q = "SELECT * FROM leaderboard ORDER BY drive DESC";
   }
-  
   $result = mysqli_query($conn,$q);
+
+
+  $time_end = microtime(true);
+  $time = $time_end - $time_start;
 
 ?>
 
@@ -152,7 +158,11 @@ $name="Leaderboard"
 
         ?>
       </table>
-      <?php echo "Loop Count: ".$count?>
+      <?php 
+      echo "Loop Count: " . $loop_count; 
+      echo " Took " . round($time,2) . " second";
+
+      ?>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>

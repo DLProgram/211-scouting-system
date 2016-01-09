@@ -47,6 +47,7 @@
     <div id="top"></div>
     <div class="container">
       <h1>Search</h1>
+
       <div class="row">
         <div class="col-md-2">
           <form method="get"> 
@@ -63,7 +64,11 @@
         if($result){
           echo "<hr>";
           echo "<table class='table table-striped'>
-          <tr> <th>ID</th> <th>Match Number</th> <th>Team Number</th> <th>Lift</th> <th>Lifted</th> <th>Auto</th> <th>Drive</th> </tr>";
+          <tr> <th>ID</th> <th>Match Number</th> <th>Team Number</th> <th>Lift</th> <th>Lifted</th> <th>Auto</th> <th>Drive</th>"; 
+          if($color == "admin"){
+           echo "<th>User</th>";
+          }
+          echo "</tr>";
           while($row = mysqli_fetch_assoc($result)){
             echo "<tr>" .
              "<td>" . $row["id"]. "</td>" . 
@@ -72,14 +77,16 @@
              "<td>" . $row["lift"]. "</td>" . 
              "<td>" . $row["lifted"]. "</td>" . 
              "<td>" . $row["auto"]. "</td>" . 
-             "<td>" . $row["drive"]. "</td>" . 
-             "</tr>";
+             "<td>" . $row["drive"]. "</td>";
+             if($color == "admin"){
+              echo "<td>" . $row["user"] . "</td>";
+             }
+             echo "</tr>";
           }
           echo" </table>";
         }
       }
       ?>
-
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
