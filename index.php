@@ -30,16 +30,17 @@
     <div id="top"></div>
     <div class="container">
       <?php
+        $error = [];
         //check if there is post data
         if(isset($_POST["submit"])){
           //submiting data
           if ($_POST["submit"] == "Submit"){
             //empty match number or team number
-            if (empty($_POST["match_number"]) || empty($_POST["team_number"])){
-              echo "<div class='alert alert-danger' role='alert'> 
-              <a href='#'' class='close' data-dismiss='alert' aria-lable='close'>&times;</a>
-              <strong>Error:</strong> Please enter a team number and a match number!!!
-              </div>";
+            if (empty($_POST["match_number"])){
+              $error[] = "Please enter a match number!!!";
+            }elseif(empty($_POST["team_number"]) || empty($_POST["team_number2"])){
+              $error[] = "Please enter both team number!!!";
+              $match_num=$_POST["match_number"];
             }else{
               //match number and team number not empty
               $match_number = $_POST["match_number"];
@@ -122,10 +123,7 @@
             //getting match datas
             $match_num = $_POST["match_number"];
             if (empty($match_num)){
-              echo "<div class='alert alert-danger' role='alert'> 
-              <a href='#'' class='close' data-dismiss='alert' aria-lable='close'>&times;</a>
-              <strong>Error:</strong> Please enter a match number!!!
-              </div>";
+              $error[] = "Please enter a match number!!!";
             }else{
               if($color == "red"){
                 $team1 = getTeams($match_num, 'red1');
@@ -142,6 +140,14 @@
             }
             
           }
+        }
+      ?>
+      <?php 
+        foreach ($error as $val) {
+          echo "<div class='alert alert-danger' role='alert'> 
+          <a href='#'' class='close' data-dismiss='alert' aria-lable='close'>&times;</a>
+          <strong>Error:</strong> $val
+          </div>";
         }
       ?>
       <h1>Home</h1>
