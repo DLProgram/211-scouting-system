@@ -102,6 +102,7 @@
       <?php
       if(!empty($error)){
         echo "<div class='alert alert-danger' role='alert'> 
+        <a href='#'' class='close' data-dismiss='alert' aria-lable='close'>&times;</a>
         <strong>Error:</strong> $error
         </div>";
       }

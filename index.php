@@ -1,8 +1,8 @@
 <?php 
-include("connect.php");
-include('lock.php'); 
-include("match.php");
-$name="Home"
+  include("connect.php");
+  include('lock.php'); 
+  include("match.php");
+  $name="Home"
 ?>
 
 <!DOCTYPE html>
@@ -11,12 +11,11 @@ $name="Home"
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    
     <title><?php echo $name?></title>
 
-    <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
-
+    <link rel="stylesheet" type="text/css" href="css.css">
     <link rel="icon" href="1.ico" type="image/x-icon">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -25,28 +24,117 @@ $name="Home"
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <style type="text/css">
-      input{
-        margin-bottom: 10px;
-      }
-      li{
-        margin-left: 5px;
-        margin-right: 10px;
-      }
-      .row{
-        margin-top: 10px;
-      }
-      #top{
-        margin-top: 60px;
-      }
-    </style>
   </head>
   <body>
     <?php include("navbar.php") ?>
     <div id="top"></div>
     <div class="container">
-      <?php include("submit.php"); ?>
+      <?php
+        if(isset($_POST["submit"])){
+          if ($_POST["submit"] == "Submit"){
+            if (empty($_POST["match_number"]) || empty($_POST["team_number"])){
+              echo "<div class='alert alert-danger' role='alert'> 
+              <a href='#'' class='close' data-dismiss='alert' aria-lable='close'>&times;</a>
+              <strong>Error:</strong> Please enter a team number and a match number!!!
+              </div>";
+            }else{
+              $match_number = $_POST["match_number"];
+
+              $team_number = $_POST["team_number"];
+              $team_number2 = $_POST["team_number2"];
+
+              if (!isset($_POST["lift"])){
+                $lift = 0;
+              }else{
+                $lift = 1;
+              }
+
+              if (!isset($_POST["lift2"])){
+                $lift2 = 0;
+              }else{
+                $lift2 = 1;
+              }
+
+              if (!isset($_POST["lifted"])){
+                $lifted = 0;
+              }else{
+                $lifted = 1;
+              }
+
+              if (!isset($_POST["lifted2"])){
+                $lifted2 = 0;
+              }else{
+                $lifted2 = 1;
+              }
+
+              $auto = $_POST["auto"];
+              $auto2 = 100-$auto;
+
+              $drive = $_POST["drive"];
+              $drive2 = 100-$drive;
+
+              $q = "INSERT INTO data (match_num, team_num, lift, lifted, auto, drive) 
+                  VALUES ({$match_number},'{$team_number}',{$lift},{$lifted},{$auto},{$drive})";
+              $result = mysqli_query($conn, $q);
+
+              $q2 = "INSERT INTO data (match_num, team_num, lift, lifted, auto, drive) 
+                  VALUES ({$match_number},'{$team_number2}',{$lift2},{$lifted2},{$auto2},{$drive2})";
+
+              $result2 = mysqli_query($conn, $q2);
+
+              if (!$result || !$result2){
+                die("Query Failed!!");
+              }else{
+                echo "<div class='alert alert-success' role='alert'>
+                <a href='#'' class='close' data-dismiss='alert' aria-lable='close'>&times;</a>
+                <strong>Submitted!</strong>
+                </div>";
+              }
+
+              $match_num = $match_number + 1;
+
+              if($color == "red"){
+                $team1 = getTeams($match_num, 'red1');
+                $team2 = getTeams($match_num, 'red2');
+              }
+              elseif ($color == "blue"){
+                $team1 = getTeams($match_num, 'blue1');
+                $team2 = getTeams($match_num, 'blue2');
+              }else{
+                $team1 = "";
+                $team2 = "";
+              }
+
+              $field=getField($match_num);
+            }
+
+          }elseif ($_POST["submit"] == "Get Teams") {
+            $match_num = $_POST["match_number"];
+            if (empty($match_num)){
+              echo "<div class='alert alert-danger' role='alert'> 
+              <a href='#'' class='close' data-dismiss='alert' aria-lable='close'>&times;</a>
+              <strong>Error:</strong> Please enter a match number!!!
+              </div>";
+            }else{
+              if($color == "red"){
+                $team1 = getTeams($match_num, 'red1');
+                $team2 = getTeams($match_num, 'red2');
+              }
+              elseif ($color == "blue"){
+                $team1 = getTeams($match_num, 'blue1');
+                $team2 = getTeams($match_num, 'blue2');
+              }else{
+                $team1 = "";
+                $team2 = "";
+              }
+              $field=getField($match_num);
+            }
+            
+          }
+        }
+      ?>
       <h1>Home</h1>
+      <div id="space"></div>
       <div>
         <form method="post" >
           <div class="row">
@@ -87,16 +175,16 @@ $name="Home"
           <hr>
           <div class="row">
             <div class="col-md-2">Auto:</div>
-            <div class="col-md-1"><?php echo isset($team1) ?  $team1 :  "Team1";?></div>
+            <div class="col-md-1"><?php echo !empty($team1) ?  $team1 :  "Team1";?></div>
             <div class="col-md-6"><input type="range" name = "auto" value="0"></div>
-            <div class="col-md-1"><?php echo isset($team2) ?  $team2 :  "Team2";?></div>
+            <div class="col-md-1"><?php echo !empty($team2) ?  $team2 :  "Team2";?></div>
           </div>
 
           <div class="row">
             <div class="col-md-2">Driver:</div>
-            <div class="col-md-1"><?php echo isset($team1) ?  $team1 :  "Team1";?></div>
+            <div class="col-md-1"><?php echo !empty($team1) ?  $team1 :  "Team1";?></div>
             <div class="col-md-6"><input type="range" name = "drive" value="0"></div>
-            <div class="col-md-1"><?php echo isset($team2) ?  $team2 :  "Team2";?></div>
+            <div class="col-md-1"><?php echo !empty($team2) ?  $team2 :  "Team2";?></div>
           </div>
           <hr>
           <div>

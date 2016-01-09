@@ -1,0 +1,16 @@
+input{
+  margin-bottom: 10px;
+}
+li{
+  margin-left: 5px;
+  margin-right: 10px;
+}
+.row{
+  margin-top: 10px;
+}
+#top{
+  margin-top: 60px;
+}
+#space{
+	margin-top: 30px; 
+}

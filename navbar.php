@@ -1,8 +1,15 @@
+<!--navbar-fixed-top-->
 <nav class="navbar navbar-inverse navbar-fixed-top">
   <div class="navbar-header">
-    <a href="index.php" class="navbar-brand">211 Scouting Systam</a>
+    <a href="#" class="navbar-brand">211 Scouting Systam</a>
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navBar">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
   </div>
-  <div class="navbar-collapse collapse">
+  <div class="collapse navbar-collapse" id="navBar">
+
     <ul class="nav navbar-nav">
       <li <?php echo $name=="Home" ? "class='active'": ""; ?>>
         <a href="index.php">Home</a>
@@ -10,6 +17,13 @@
       <li <?php echo $name=="Search" ? "class='active'": ""; ?>>
         <a href="search.php">Search</a>
       </li>
+      <li <?php echo $name=="Stats" ? "class='active'": ""; ?>>
+        <a href="stats.php">Stats</a>
+      </li>
+      <li <?php echo $name=="Leaderboard" ? "class='active'": ""; ?>>
+        <a href="leaderboard.php">Leaderboard</a>
+      </li>
+      
       <?php
       if($color == "admin"){
         echo "<li>

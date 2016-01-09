@@ -15,6 +15,6 @@
 	if(!isset($login_session))
 	{
 
-		//header("Location: login.php");
+		header("Location: login.php");
 	}
 ?>
