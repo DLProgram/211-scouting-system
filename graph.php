@@ -100,8 +100,8 @@
             valueAxis2.position = "right"; 
             valueAxis2.gridAlpha = 0;
             valueAxis2.axisThickness = 2;
-            valueAxis2.maximum = 1;
-            valueAxis2.minimum = 0;
+            valueAxis2.maximum = 1.2;
+            valueAxis2.minimum = -0.2;
             chart.addValueAxis(valueAxis2);
 
 

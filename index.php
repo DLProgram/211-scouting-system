@@ -137,58 +137,79 @@
       <div id="space"></div>
       <div>
         <form method="post" >
-          <div class="row">
-            <div class="col-md-2">Match Number:</div>
-            <div class="col-md-3"><input type="text" name="match_number" placeholder="Match Number" value= <?php echo isset($match_num) ?  $match_num :  "";?>></div>
-            <div class="col-md-2"><input type="submit" name="submit" Value="Get Teams" class="btn btn-md btn-info"></div>
-          </div>
-          <div class="row">
-            <div class="col-md-2">Field: </div>
-            <div class="col-md-2"><span class="label label-default"><?php echo isset($field) ?  $field :  ""; ?></span></div>
-          </div>
-          <div class="row">
-            <div class="col-md-2">Team Number:</div>
-            <div class="col-md-3"><input type="text" name="team_number" placeholder="Team Number" value=<?php echo isset($team1) ?  $team1 :  ""; ?>>
-            </div>
 
-            <div class="col-md-2">Team Number:</div>
-            <div class="col-md-3"><input type="text" name="team_number2" placeholder="Team Number" value=<?php echo isset($team2) ?  $team2 :  ""; ?>>
+          <div class="form-group row">
+            <lable class="col-md-2" for="match_num">Match Number:</lable>
+            <div class="col-md-6">
+              <input class="form-control" type="text" id="match_num"name="match_number" placeholder="Match Number" value= <?php echo isset($match_num) ?  $match_num :  "";?>>
+            </div>
+            <input type="submit" name="submit" Value="Get Teams" class="btn btn-md btn-info">
+          </div>
+
+          <div class="form-group row">
+            <lable class="col-md-1">Field: </lable>
+            <div class="col-md-2">
+              <span class="label label-default"><?php echo isset($field) ?  $field :  ""; ?></span>
             </div>
           </div>
 
+          <div class="form-group row">
+            <lable class="col-md-2" for="team_num_1">Team Number:</lable>
+            <div class="col-md-3">
+              <input type="text" class="form-control" id="team_num_1" name="team_number" placeholder="Team Number" value=<?php echo isset($team1) ?  $team1 :  ""; ?>>
+            </div>
+
+            <lable class="col-md-2" for="team_num_2">Team Number:</lable>
+            <div class="col-md-3">
+              <input type="text" class="form-control" id="team_num_2" name="team_number2" placeholder="Team Number" value=<?php echo isset($team2) ?  $team2 :  ""; ?>>
+            </div>
+          </div>
+
           <hr>
           <div class="row">
-            <div class="col-md-2">Lift:</div>
-            <div class="col-md-3"><input type="checkbox" name="lift" ></div>
+            <lable class="col-md-2">Lift:</lable>
+            <div class="col-md-3">
+              <input type="checkbox" name="lift" >
+            </div>
 
-            <div class="col-md-2">Lift:</div>
-            <div class="col-md-3"><input type="checkbox" name="lift2" ></div>
+            <lable class="col-md-2">Lift:</lable>
+            <div class="col-md-3">
+              <input type="checkbox" name="lift2" >
+            </div>
           </div>
 
           <div class="row">
-            <div class="col-md-2">Lifted:</div>
-            <div class="col-md-3"><input type="checkbox" name="lifted" ></div>
+            <lable class="col-md-2">Lifted:</lable>
+            <div class="col-md-3">
+              <input type="checkbox" name="lifted" >
+            </div>
 
-            <div class="col-md-2">Lifted:</div>
-            <div class="col-md-3"><input type="checkbox" name="lifted2" ></div>
+            <lable class="col-md-2">Lifted:</lable>
+            <div class="col-md-3">
+              <input type="checkbox" name="lifted2" >
+            </div>
           </div>
           <hr>
           <div class="row">
-            <div class="col-md-2">Auto:</div>
-            <div class="col-md-1"><?php echo !empty($team1) ?  $team1 :  "Team1";?></div>
-            <div class="col-md-6"><input type="range" name = "auto" value="0"></div>
-            <div class="col-md-1"><?php echo !empty($team2) ?  $team2 :  "Team2";?></div>
+            <lable class="col-md-2">Auto:</lable>
+            <lable class="col-md-1"><?php echo !empty($team1) ?  $team1 :  "Team1";?></lable>
+            <div class="col-md-6">
+              <input type="range" name="auto" value="0">
+            </div>
+            <lable class="col-md-1"><?php echo !empty($team2) ?  $team2 :  "Team2";?></lable>
           </div>
 
           <div class="row">
-            <div class="col-md-2">Driver:</div>
-            <div class="col-md-1"><?php echo !empty($team1) ?  $team1 :  "Team1";?></div>
-            <div class="col-md-6"><input type="range" name = "drive" value="0"></div>
-            <div class="col-md-1"><?php echo !empty($team2) ?  $team2 :  "Team2";?></div>
+            <lable class="col-md-2">Driver:</lable>
+            <lable class="col-md-1"><?php echo !empty($team1) ?  $team1 :  "Team1";?></lable>
+            <div class="col-md-6">
+              <input type="range" name="drive" value="0">
+            </div>
+            <lable class="col-md-1"><?php echo !empty($team2) ?  $team2 :  "Team2";?></lable>
           </div>
           <hr>
-          <div>
-            <input type="submit" name="submit" Value="Submit" class="btn btn-lg btn-success">
+          <div class="col-md-11">
+            <input type="submit" name="submit" Value="Submit" class="btn btn-lg btn-success btn-block">
           </div>
           
         </form>
