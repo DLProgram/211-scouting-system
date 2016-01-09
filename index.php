@@ -1,6 +1,8 @@
 <?php 
 include("connect.php");
 include('lock.php'); 
+include("match.php");
+$name="Home"
 ?>
 
 <!DOCTYPE html>
@@ -10,7 +12,7 @@ include('lock.php');
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Home</title>
+    <title><?php echo $name?></title>
 
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -31,113 +33,70 @@ include('lock.php');
         margin-left: 5px;
         margin-right: 10px;
       }
-      h1{
-        margin-top: 100px;
+      .row{
+        margin-top: 10px;
+      }
+      #top{
+        margin-top: 60px;
       }
     </style>
   </head>
   <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-header">
-        <a href="index.php" class="navbar-brand">211 Scouting Systam</a>
-      </div>
-      <div class="navbar-collapse collapse">
-        <ul class="nav navbar-nav">
-          <li class="active">
-            <a href="index.php">Home</a>
-          </li>
-          <li>
-            <a href="search.php">Search</a>
-          </li>
-          
-        </ul>
-
-        <ul class="nav navbar-nav navbar-right">
-          <li>
-            <a>Loged in as: <?php echo $login_session;?></a>
-          </li>
-          <li>
-            <a href="logout.php">Log Out</a>
-          </li>
-        </ul>
-
-      </div>
-    </nav>
-
+    <?php include("navbar.php") ?>
+    <div id="top"></div>
     <div class="container">
-      <?php
-
-        if(isset($_POST["submit"])){
-          if (empty($_POST["match_number"]) || empty($_POST["team_number"])){
-            echo "<div class='alert alert-danger' role='alert'> 
-            <strong>Error:</strong> Please enter a team number and a match number!!!
-            </div>";
-          }else{
-            $match_number = $_POST["match_number"];
-
-            $team_number = $_POST["team_number"];
-
-            if (!isset($_POST["lift"])){
-              $lift = 0;
-            }else{
-              $lift = 1;
-            }
-
-            if (!isset($_POST["lifted"])){
-              $lifted = 0;
-            }else{
-              $lifted = 1;
-            }
-
-            $auto = $_POST["auto"];
-            $drive = $_POST["drive"];
-
-            $q = "INSERT INTO data (match_num, team_num, lift, lifted, auto, drive) 
-                VALUES ({$match_number},'{$team_number}',{$lift},{$lifted},{$auto},{$drive})";
-            $result = mysqli_query($conn, $q);
-
-            if (!$result){
-              die("Query Failed!!");
-            }else{
-              echo "<div class='alert alert-success' role='alert'>
-              <strong>Submitted!</strong>
-              </div>";
-            }
-          }
-        }
-      ?>
+      <?php include("submit.php"); ?>
       <h1>Home</h1>
       <div>
         <form method="post" >
           <div class="row">
             <div class="col-md-2">Match Number:</div>
-            <div class="col-md-3"><input type="text" name="team_number" placeholder="Match Number" value=""></div>
+            <div class="col-md-3"><input type="text" name="match_number" placeholder="Match Number" value= <?php echo isset($match_num) ?  $match_num :  "";?>></div>
+            <div class="col-md-2"><input type="submit" name="submit" Value="Get Teams" class="btn btn-md btn-info"></div>
           </div>
-
+          <div class="row">
+            <div class="col-md-2">Field: </div>
+            <div class="col-md-2"><span class="label label-default"><?php echo isset($field) ?  $field :  ""; ?></span></div>
+          </div>
           <div class="row">
             <div class="col-md-2">Team Number:</div>
-            <div class="col-md-3"><input type="text" name="match_number" placeholder="Team Number" value=""></div>
+            <div class="col-md-3"><input type="text" name="team_number" placeholder="Team Number" value=<?php echo isset($team1) ?  $team1 :  ""; ?>>
+            </div>
+
+            <div class="col-md-2">Team Number:</div>
+            <div class="col-md-3"><input type="text" name="team_number2" placeholder="Team Number" value=<?php echo isset($team2) ?  $team2 :  ""; ?>>
+            </div>
           </div>
 
           <hr>
           <div class="row">
             <div class="col-md-2">Lift:</div>
             <div class="col-md-3"><input type="checkbox" name="lift" ></div>
+
+            <div class="col-md-2">Lift:</div>
+            <div class="col-md-3"><input type="checkbox" name="lift2" ></div>
           </div>
 
           <div class="row">
             <div class="col-md-2">Lifted:</div>
             <div class="col-md-3"><input type="checkbox" name="lifted" ></div>
+
+            <div class="col-md-2">Lifted:</div>
+            <div class="col-md-3"><input type="checkbox" name="lifted2" ></div>
           </div>
           <hr>
           <div class="row">
             <div class="col-md-2">Auto:</div>
-            <div class="col-md-3"><input type="range" name = "auto" value="0"></div>
+            <div class="col-md-1"><?php echo isset($team1) ?  $team1 :  "Team1";?></div>
+            <div class="col-md-6"><input type="range" name = "auto" value="0"></div>
+            <div class="col-md-1"><?php echo isset($team2) ?  $team2 :  "Team2";?></div>
           </div>
 
           <div class="row">
             <div class="col-md-2">Driver:</div>
-            <div class="col-md-3"><input type="range" name = "drive" value="0"></div>
+            <div class="col-md-1"><?php echo isset($team1) ?  $team1 :  "Team1";?></div>
+            <div class="col-md-6"><input type="range" name = "drive" value="0"></div>
+            <div class="col-md-1"><?php echo isset($team2) ?  $team2 :  "Team2";?></div>
           </div>
           <hr>
           <div>
@@ -147,9 +106,8 @@ include('lock.php');
         </form>
       </div>
     </div>
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.min.js"></script>
   </body>
 </html>

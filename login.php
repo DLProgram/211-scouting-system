@@ -18,11 +18,12 @@
       $q="SELECT * FROM users WHERE username='$username' AND password='$password'";
       $result = mysqli_query($conn, $q);
       $count = mysqli_num_rows($result);
+      $row=mysqli_fetch_assoc($result);
 
       if($count==1)
       {
         $_SESSION['login_user']=$username;
-         
+        $_SESSION['color']=$row['color'];
         header("location: index.php");
       }
       else

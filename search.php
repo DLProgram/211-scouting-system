@@ -1,6 +1,9 @@
 <?php
   include("connect.php");
   include('lock.php'); 
+  $name="Search"
+?>
+<?php
   if (isset($_GET["submit"])){
     $match_number = $_GET["match_number"];
     $team_number = $_GET["team_number"];
@@ -26,7 +29,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Search</title>
+    <title><?php echo $name?></title>
 
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -48,46 +51,21 @@
         margin-left: 5px;
         margin-right: 10px;
       }
-      h1{
-        margin-top: 100px;
+      #top{
+        margin-top: 60px;
       }
     </style>
   </head>
   <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-header">
-        <a href="index.php" class="navbar-brand">211 Scouting Systam</a>
-      </div>
-      <div class="navbar-collapse collapse">
-        <ul class="nav navbar-nav">
-          <li>
-            <a href="index.php">Home</a>
-          </li>
-          <li class="active">
-            <a href="search.php">Search</a>
-          </li>
-          
-        </ul>
-
-        <ul class="nav navbar-nav navbar-right">
-          <li>
-            <a>Loged in as: <?php echo $login_session;?></a>
-          </li>
-          <li>
-            <a href="logout.php">Log Out</a>
-          </li>
-        </ul>
-
-      </div>
-    </nav>
-
+    <?php include("navbar.php") ?>
+    <div id="top"></div>
     <div class="container">
       <h1>Search</h1>
       <div class="row">
         <div class="col-md-2">
           <form method="get"> 
-            Match Number: <input type="text" name="match_number" value=""><br />
-            Team Number: <input type="text" name="team_number" value=""><br />
+            Match Number: <input type="text" name="match_number" value=<?php echo isset($match_number) ?  $match_number :  "";?>><br />
+            Team Number: <input type="text" name="team_number" value=<?php echo isset($team_number) ?  $team_number :  "";?>><br />
             <hr>
             <input type="submit" name="submit" Value="Search" class="btn btn-lg btn-success">
           </form>
