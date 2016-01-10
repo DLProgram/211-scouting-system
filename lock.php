@@ -12,8 +12,7 @@
 	 
 	$login_session=$row['username'];
 	
-	if(!isset($login_session) || !isset($color)){
+	if((!isset($login_session)) || (!isset($color))){
 		header("Location: login.php");
 	}
-
 ?>
