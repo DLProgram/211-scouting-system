@@ -1,6 +1,6 @@
-<?php 
+<?php
   include("connect.php");
-  include('lock.php'); 
+  include('lock.php');
   include("match.php");
   $name="Home"
 ?>
@@ -11,12 +11,16 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
+
     <title><?php echo $name?></title>
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css.css">
     <link rel="icon" href="1.ico" type="image/x-icon">
+
+    <link rel="stylesheet" type="text/css" href="css/rangestepper.css">
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.js"></script>
+    <script src="js/rangestepper.js"></script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -48,7 +52,7 @@
               $team_number = $_POST["team_number"];
               $team_number2 = $_POST["team_number2"];
 
-              //form validation 
+              //form validation
               if (!isset($_POST["lift"])){
                 $lift = 0;
               }else{
@@ -80,17 +84,17 @@
               $drive = $_POST["drive"];
               $drive2 = 100-$drive;
 
-              //team one query 
-              $q = "INSERT INTO data_tmp (match_num, team_num, lift, lifted, auto, drive, user) 
+              //team one query
+              $q = "INSERT INTO data_tmp (match_num, team_num, lift, lifted, auto, drive, user)
                   VALUES ({$match_number},'{$team_number}',{$lift},{$lifted},{$auto},{$drive},'{$login_session}')";
               $result = mysqli_query($conn, $q);
 
               //team two query
-              $q2 = "INSERT INTO data_tmp (match_num, team_num, lift, lifted, auto, drive, user) 
+              $q2 = "INSERT INTO data_tmp (match_num, team_num, lift, lifted, auto, drive, user)
                   VALUES ({$match_number},'{$team_number2}',{$lift2},{$lifted2},{$auto2},{$drive2}, '{$login_session}')";
               $result2 = mysqli_query($conn, $q2);
 
-              //make sure data was submitted 
+              //make sure data was submitted
               if (!$result || !$result2){
                 die("Query Failed!!");
               }else{
@@ -138,13 +142,13 @@
               }
               $field=getField($match_num);
             }
-            
+
           }
         }
       ?>
-      <?php 
+      <?php
         foreach ($error as $val) {
-          echo "<div class='alert alert-danger' role='alert'> 
+          echo "<div class='alert alert-danger' role='alert'>
           <a href='#'' class='close' data-dismiss='alert' aria-lable='close'>&times;</a>
           <strong>Error:</strong> $val
           </div>";
@@ -160,7 +164,7 @@
             <div class="col-md-6">
               <input class="form-control" type="text" id="match_num"name="match_number" placeholder="Match Number" value= <?php echo isset($match_num) ?  $match_num :  "";?>>
             </div>
-            <?php 
+            <?php
               //colored buttons
               if($color == "blue"){
                 echo "<input type='submit' name='submit' Value='Get Teams' class='btn btn-md btn-primary'>";
@@ -172,7 +176,7 @@
                 echo "<input type='submit' name='submit' Value='Get Teams' class='btn btn-md btn-info'>";
               }
             ?>
-            
+
           </div>
 
           <!--Field data-->
@@ -228,8 +232,16 @@
           <div class="row">
             <lable class="col-md-2">Auto:</lable>
             <lable class="col-md-1"><?php echo !empty($team1) ?  $team1 :  "Team1";?></lable>
-            <div class="col-md-6">
-              <input type="range" name="auto" value="0">
+            <div class="col-md-1" align="center">
+              <span id="auto_team_1" class="label label-default">50</span>
+            </div>
+
+            <div class="col-md-4">
+              <input type="range" name="auto" value="50" step="10" oninput="update_auto(this.value)" onchange="update_auto(this.value)">
+            </div>
+
+            <div class="col-md-1" align="center">
+              <span id="auto_team_2" class="label label-default">50</span>
             </div>
             <lable class="col-md-1"><?php echo !empty($team2) ?  $team2 :  "Team2";?></lable>
           </div>
@@ -237,8 +249,16 @@
           <div class="row">
             <lable class="col-md-2">Driver:</lable>
             <lable class="col-md-1"><?php echo !empty($team1) ?  $team1 :  "Team1";?></lable>
-            <div class="col-md-6">
-              <input type="range" name="drive" value="0">
+            <div class="col-md-1" align="center">
+              <span id="drive_team_1" class="label label-default">50</span>
+            </div>
+
+            <div class="col-md-4">
+              <input type="range" name="drive" value="50" step="10" id="drive" oninput="update_drive(this.value)" onchange="update_drive(this.value)">
+            </div>
+
+            <div class="col-md-1" align="center">
+              <span id="drive_team_2" class="label label-default">50</span>
             </div>
             <lable class="col-md-1"><?php echo !empty($team2) ?  $team2 :  "Team2";?></lable>
           </div>
@@ -247,13 +267,32 @@
           <div class="col-md-11">
             <input type="submit" name="submit" Value="Submit" class="btn btn-lg btn-success btn-block">
           </div>
-          
+
         </form>
       </div>
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+
+    <script>
+    var drive = document.getElementById("drive").value;
+    var auto = document.getElementById("auto").value;
+
+    function update_auto(val){
+      document.getElementById("auto_team_1").innerHTML=val;
+      document.getElementById("auto_team_2").innerHTML=100-val;
+    }
+
+    function update_drive(val){
+      document.getElementById("drive_team_1").innerHTML=val;
+      document.getElementById("drive_team_2").innerHTML=100-val;
+    }
+
+
+
+    </script>
+
   </body>
 </html>
 
