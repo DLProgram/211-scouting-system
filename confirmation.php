@@ -34,43 +34,54 @@
       <div class="container" >
         <div id="top"></div>
         <?php 
-          if(isset($_GET["action"])){
+          if(isset($_GET["submit"])){
             if($color == "admin"){
-              if($_GET["action"] == "ok"){
-                $id=$_GET["id"];
-                $q = "SELECT * FROM data_tmp WHERE id=$id;";
-                $result = mysqli_query($conn, $q);
-                $count = mysqli_num_rows($result);
-                if($count == 1){
-                  $row = mysqli_fetch_assoc($result);
+              if($_GET["submit"] == "Ok"){
 
-                  $match_number=$row["match_num"];
-                  $team_number=$row["team_num"];
-                  $lift=$row["lift"];
-                  $lifted=$row["lifted"];
-                  $auto=$row["auto"];
-                  $drive=$row["drive"];
-                  $user=$row["user"];
-
-                  $q = "INSERT INTO data (match_num, team_num, lift, lifted, auto, drive, user) 
-                      VALUES ({$match_number},'{$team_number}',{$lift},{$lifted},{$auto},{$drive},'{$user}')";
-
+                if(empty($_GET["score"])){
+                  echo "<div class='alert alert-danger' role='alert'>
+                      <a href='#'' class='close' data-dismiss='alert' aria-lable='close'>&times;</a>
+                      <strong>Please enter a score!!!!</strong>
+                      </div>";
+                }else{
+                  $id=$_GET["id"];
+                  $q = "SELECT * FROM data_tmp WHERE id=$id;";
                   $result = mysqli_query($conn, $q);
+                  $count = mysqli_num_rows($result);
+                  if($count == 1){
+                    $row = mysqli_fetch_assoc($result);
+
+                    $match_number=$row["match_num"];
+                    $team_number=$row["team_num"];
+
+                    $score=$_GET["score"];
+
+                    $lift=$row["lift"];
+                    $lifted=$row["lifted"];
+                    $auto= $score * $row["auto"] / 100;
+                    $drive= $score * $row["drive"]  / 100;
+                    $user=$row["user"];
+
+                    $q = "INSERT INTO data (match_num, team_num, lift, lifted, auto, drive, user) 
+                        VALUES ({$match_number},'{$team_number}',{$lift},{$lifted},{$auto},{$drive},'{$user}')";
+
+                    $result = mysqli_query($conn, $q);
 
 
-                  $q = "DELETE FROM `data_tmp` WHERE `id` = $id";
-                  $result = mysqli_query($conn, $q);
+                    $q = "DELETE FROM `data_tmp` WHERE `id` = $id";
+                    $result = mysqli_query($conn, $q);
 
-                  if (!$result){
-                    die("Query Failed!!");
-                  }else{
-                    echo "<div class='alert alert-success' role='alert'>
-                    <a href='#'' class='close' data-dismiss='alert' aria-lable='close'>&times;</a>
-                    <strong>Submitted!</strong>
-                    </div>";
+                    if (!$result){
+                      die("Query Failed!!");
+                    }else{
+                      echo "<div class='alert alert-success' role='alert'>
+                      <a href='#'' class='close' data-dismiss='alert' aria-lable='close'>&times;</a>
+                      <strong>Submitted!</strong>
+                      </div>";
+                    }
                   }
                 }
-              }elseif ($_GET["action"] == "cancel") {
+              }elseif ($_GET["submit"] == "Cancel") {
                 $id=$_GET["id"];
 
                 $q = "DELETE FROM `data_tmp` WHERE `id` = $id";
@@ -94,33 +105,33 @@
         ?>
 
         <h1>Confirmation</h1>
-        <table class='table table-striped'>
-          <tr>
-            <th>ID</th> <th>Match Number</th> <th>Team Number</th> <th>Lift</th> <th>Lifted</th> <th>Auto</th> <th>Drive</th> <th>User</th> <th>Ok</th> <th>Cancel</th>  
-          </tr>
 
           <?php 
-            echo "</tr>";
             while($row = mysqli_fetch_assoc($dbresult)){
-              echo "<tr>" .
-               "<td>" . $row["id"]. "</td>" . 
-               "<td>" . $row["match_num"]. "</td>" . 
-               "<td>" . $row["team_num"]. "</td>" . 
-               "<td>" . $row["lift"]. "</td>" . 
-               "<td>" . $row["lifted"]. "</td>" . 
-               "<td>" . $row["auto"]. "</td>" . 
-               "<td>" . $row["drive"]. "</td>" . 
-               "<td>" . $row["user"] . "</td>".
-               "<td><a href=?action=ok&id=".$row["id"]. ">
-               <span class='glyphicon glyphicon-ok' aria-hidden='true'></span>
-               </a></td>".
-               "<td><a href=?action=cancel&id=".$row["id"]. ">
-               <span class='glyphicon glyphicon-remove' aria-hidden='true'></span>
-               </a></td>";
-               echo "</tr>";
+              echo "<div class='row'><form method='get'>";
+              
+              echo "<div class='col-md-1'><span>" . $row['id'] . "</span></div>";
+              echo "<div class='col-md-1'><span>" . $row['match_num'] . "</span></div>";
+              echo "<div class='col-md-1'><span>" . $row['team_num'] . "</span></div>";
+              echo "<div class='col-md-1'><span>" . $row['lift'] . "</span></div>";
+              echo "<div class='col-md-1'><span>" . $row['lifted'] . "</span></div>";
+              echo "<div class='col-md-1'><span>" . $row['auto'] . "</span></div>";
+              echo "<div class='col-md-1'><span>" . $row['drive'] . "</span></div>";
+              echo "<div class='col-md-1'><span>" . $row['user'] . "</span></div>";
+              echo "<div class='col-md-2'><input name='score'></div>";
+              echo "<input type='hidden' name='id' value='" . $row['id']."'>";
+              
+              echo "<div class='col-md-1'> 
+              <input type='submit' name='submit' value='Ok' class='btn btn-md btn-primary'>
+              </div>";
+
+              echo "<div class='col-md-1'> 
+              <input type='submit' name='submit' value='Cancel' class='btn btn-md btn-danger'>
+              </div>";
+
+              echo "</form> </div>";
             }
           ?>
-        </table>
       </div>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>

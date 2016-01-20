@@ -162,7 +162,7 @@
           <div class="form-group row">
             <lable class="col-md-2" for="match_num">Match Number:</lable>
             <div class="col-md-6">
-              <input class="form-control" type="text" id="match_num"name="match_number" placeholder="Match Number" value= <?php echo isset($match_num) ?  $match_num :  "";?>>
+              <input class="form-control" type="text" id="match_num" name="match_number" placeholder="Match Number" value= <?php echo isset($match_num) ?  $match_num :  "";?>>
             </div>
             <?php
               //colored buttons
