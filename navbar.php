@@ -2,7 +2,7 @@
 <nav class="navbar navbar-inverse navbar-fixed-top">
   <div class="navbar-header">
     <!--Logo-->
-    <a href="#" class="navbar-brand">211 Scouting Systam</a>
+    <a href="#" class="navbar-brand">211 Scouting System</a>
     <!--Navbar toggle button-->
     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navBar">
       <span class="icon-bar"></span>

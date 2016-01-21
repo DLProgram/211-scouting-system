@@ -52,31 +52,24 @@
               $team_number = $_POST["team_number"];
               $team_number2 = $_POST["team_number2"];
 
-              //form validation
-              if (!isset($_POST["lift"])){
-                $lift = 0;
-              }else{
+              if (isset($_POST['lift']) && isset($_POST['lift2'])) {
+                $error[]="Both team can't be lifted at the same time!!!";
+              }elseif(isset($_POST['lift'])) {
                 $lift = 1;
-              }
-
-              if (!isset($_POST["lift2"])){
-                $lift2 = 0;
-              }else{
-                $lift2 = 1;
-              }
-
-              if (!isset($_POST["lifted"])){
                 $lifted = 0;
-              }else{
+                $lift2 = 0;
+                $lifted2 = 1;
+              }elseif (isset($_POST['lift2'])) {
+                $lift = 0;
                 $lifted = 1;
-              }
-
-              if (!isset($_POST["lifted2"])){
+                $lift2 = 1;
                 $lifted2 = 0;
               }else{
-                $lifted2 = 1;
+                $lift = 0;
+                $lifted = 0;
+                $lift2 = 0;
+                $lifted2 = 0;
               }
-
               //seconf team data
               $auto = $_POST["auto"];
               $auto2 = 100-$auto;
@@ -84,44 +77,46 @@
               $drive = $_POST["drive"];
               $drive2 = 100-$drive;
 
-              //team one query
-              $q = "INSERT INTO data_tmp (match_num, team_num, lift, lifted, auto, drive, user)
-                  VALUES ({$match_number},'{$team_number}',{$lift},{$lifted},{$auto},{$drive},'{$login_session}')";
-              $result = mysqli_query($conn, $q);
+              if(empty($error)){
+                //team one query
+                $q = "INSERT INTO data_tmp (match_num, team_num, lift, lifted, auto, drive, user)
+                    VALUES ({$match_number},'{$team_number}',{$lift},{$lifted},{$auto},{$drive},'{$login_session}')";
+                $result = mysqli_query($conn, $q);
 
-              //team two query
-              $q2 = "INSERT INTO data_tmp (match_num, team_num, lift, lifted, auto, drive, user)
-                  VALUES ({$match_number},'{$team_number2}',{$lift2},{$lifted2},{$auto2},{$drive2}, '{$login_session}')";
-              $result2 = mysqli_query($conn, $q2);
+                //team two query
+                $q2 = "INSERT INTO data_tmp (match_num, team_num, lift, lifted, auto, drive, user)
+                    VALUES ({$match_number},'{$team_number2}',{$lift2},{$lifted2},{$auto2},{$drive2}, '{$login_session}')";
+                $result2 = mysqli_query($conn, $q2);
 
-              //make sure data was submitted
-              if (!$result || !$result2){
-                die("Query Failed!!");
-              }else{
-                echo "<div class='alert alert-success' role='alert'>
-                <a href='#'' class='close' data-dismiss='alert' aria-lable='close'>&times;</a>
-                <strong>Submitted!</strong>
-                </div>";
+                //make sure data was submitted
+                if (!$result || !$result2){
+                  die("Query Failed!!");
+                }else{
+                  echo "<div class='alert alert-success' role='alert'>
+                  <a href='#'' class='close' data-dismiss='alert' aria-lable='close'>&times;</a>
+                  <strong>Submitted!</strong>
+                  </div>";
+                }
+
+                //increase match number by one
+                $match_num = $match_number + 1;
+
+                //get teams bu color
+                if($color == "red"){
+                  $team1 = getTeams($match_num, 'red1');
+                  $team2 = getTeams($match_num, 'red2');
+                }
+                elseif ($color == "blue"){
+                  $team1 = getTeams($match_num, 'blue1');
+                  $team2 = getTeams($match_num, 'blue2');
+                }else{
+                  $team1 = "";
+                  $team2 = "";
+                }
+
+                //get field
+                $field=getField($match_num);
               }
-
-              //increase match number by one
-              $match_num = $match_number + 1;
-
-              //get teams bu color
-              if($color == "red"){
-                $team1 = getTeams($match_num, 'red1');
-                $team2 = getTeams($match_num, 'red2');
-              }
-              elseif ($color == "blue"){
-                $team1 = getTeams($match_num, 'blue1');
-                $team2 = getTeams($match_num, 'blue2');
-              }else{
-                $team1 = "";
-                $team2 = "";
-              }
-
-              //get field
-              $field=getField($match_num);
             }
           }elseif ($_POST["submit"] == "Get Teams") {
             //getting match datas
@@ -211,19 +206,6 @@
             <lable class="col-md-2">Lift:</lable>
             <div class="col-md-3">
               <input type="checkbox" name="lift2" >
-            </div>
-          </div>
-
-          <!--lifted-->
-          <div class="row">
-            <lable class="col-md-2">Lifted:</lable>
-            <div class="col-md-3">
-              <input type="checkbox" name="lifted" >
-            </div>
-
-            <lable class="col-md-2">Lifted:</lable>
-            <div class="col-md-3">
-              <input type="checkbox" name="lifted2" >
             </div>
           </div>
 
