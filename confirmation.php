@@ -105,6 +105,20 @@
         ?>
 
         <h1>Confirmation</h1>
+        <div class='row'>
+          <div class='col-md-1'>ID</div>
+          <div class='col-md-1'>Match Number</div>
+          <div class='col-md-1'>Team Number</div>
+          <div class='col-md-1'>Lift</div>
+          <div class='col-md-1'>Lifted</div>
+          <div class='col-md-1'>Auto</div>
+          <div class='col-md-1'>Drive</div>
+          <div class='col-md-1'>User</div>
+          <div class='col-md-2'>Score</div>
+          <div class='col-md-1'>Ok</div>
+          <div class='col-md-1'>Cancel</div>
+
+        </div>
 
           <?php 
             while($row = mysqli_fetch_assoc($dbresult)){

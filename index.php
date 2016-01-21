@@ -191,12 +191,12 @@
           <div class="form-group row">
             <lable class="col-md-2" for="team_num_1">Team Number:</lable>
             <div class="col-md-3">
-              <input type="text" class="form-control" id="team_num_1" name="team_number" placeholder="Team Number" value=<?php echo isset($team1) ?  $team1 :  ""; ?>>
+              <input <?php echo $color == "admin" ?  "" :  "readonly"; ?> type="text" class="form-control" id="team_num_1" name="team_number" placeholder="Team Number" value=<?php echo isset($team1) ?  $team1 :  ""; ?> >
             </div>
 
             <lable class="col-md-2" for="team_num_2">Team Number:</lable>
             <div class="col-md-3">
-              <input type="text" class="form-control" id="team_num_2" name="team_number2" placeholder="Team Number" value=<?php echo isset($team2) ?  $team2 :  ""; ?>>
+              <input <?php echo $color == "admin" ?  "" :  "readonly"; ?> type="text" class="form-control" id="team_num_2" name="team_number2" placeholder="Team Number" value=<?php echo isset($team2) ?  $team2 :  ""; ?>>
             </div>
           </div>
 
