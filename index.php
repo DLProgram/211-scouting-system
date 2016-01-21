@@ -198,12 +198,12 @@
           <!--lift-->
           <hr>
           <div class="row">
-            <lable class="col-md-2">Lift:</lable>
+            <lable class="col-md-2">Did The Lifting:</lable>
             <div class="col-md-3">
               <input type="checkbox" name="lift" >
             </div>
 
-            <lable class="col-md-2">Lift:</lable>
+            <lable class="col-md-2">Did The Lifting:</lable>
             <div class="col-md-3">
               <input type="checkbox" name="lift2" >
             </div>
