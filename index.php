@@ -79,17 +79,18 @@
 
               if(empty($error)){
                 //team one query
-                $q = "INSERT INTO data_tmp (match_num, team_num, lift, lifted, auto, drive, user)
-                    VALUES ({$match_number},'{$team_number}',{$lift},{$lifted},{$auto},{$drive},'{$login_session}')";
+                $q = "INSERT INTO data_tmp (match_num, team_num, lift, lifted, auto, drive, team_num2, lift2, lifted2, auto2, drive2, user)
+                    VALUES ({$match_number},'{$team_number}',{$lift},{$lifted},{$auto},{$drive},'{$team_number2}',{$lift2},{$lifted2},{$auto2},{$drive2},'{$login_session}')";
                 $result = mysqli_query($conn, $q);
 
                 //team two query
-                $q2 = "INSERT INTO data_tmp (match_num, team_num, lift, lifted, auto, drive, user)
-                    VALUES ({$match_number},'{$team_number2}',{$lift2},{$lifted2},{$auto2},{$drive2}, '{$login_session}')";
-                $result2 = mysqli_query($conn, $q2);
+                // $q2 = "INSERT INTO data_tmp (match_num, team_num, lift, lifted, auto, drive, user)
+                //     VALUES ({$match_number},'{$team_number2}',{$lift2},{$lifted2},{$auto2},{$drive2}, '{$login_session}')";
+                // $result2 = mysqli_query($conn, $q2);
 
                 //make sure data was submitted
-                if (!$result || !$result2){
+                //if (!$result || !$result2){
+                if (!$result){
                   die("Query Failed!!");
                 }else{
                   echo "<div class='alert alert-success' role='alert'>
@@ -186,12 +187,12 @@
           <div class="form-group row">
             <lable class="col-md-2" for="team_num_1">Team Number:</lable>
             <div class="col-md-3">
-              <input <?php echo $color == "admin" ?  "" :  "readonly"; ?> type="text" class="form-control" id="team_num_1" name="team_number" placeholder="Team Number" value=<?php echo isset($team1) ?  $team1 :  ""; ?> >
+              <input  type="text" class="form-control" id="team_num_1" name="team_number" placeholder="Team Number" value=<?php echo isset($team1) ?  $team1 :  ""; ?> >
             </div>
 
             <lable class="col-md-2" for="team_num_2">Team Number:</lable>
             <div class="col-md-3">
-              <input <?php echo $color == "admin" ?  "" :  "readonly"; ?> type="text" class="form-control" id="team_num_2" name="team_number2" placeholder="Team Number" value=<?php echo isset($team2) ?  $team2 :  ""; ?>>
+              <input type="text" class="form-control" id="team_num_2" name="team_number2" placeholder="Team Number" value=<?php echo isset($team2) ?  $team2 :  ""; ?>>
             </div>
           </div>
 

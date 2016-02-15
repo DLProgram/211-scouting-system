@@ -53,6 +53,7 @@
 
                     $match_number=$row["match_num"];
                     $team_number=$row["team_num"];
+                    $team_number2=$row["team_num2"];
 
                     $score=$_GET["score"];
 
@@ -60,12 +61,22 @@
                     $lifted=$row["lifted"];
                     $auto= $score * $row["auto"] / 100;
                     $drive= $score * $row["drive"]  / 100;
+
+                    $lift2=$row["lift2"];
+                    $lifted2=$row["lifted2"];
+                    $auto2= $score * $row["auto2"] / 100;
+                    $drive2= $score * $row["drive2"]  / 100;
+
                     $user=$row["user"];
 
                     $q = "INSERT INTO data (match_num, team_num, lift, lifted, auto, drive, user) 
                         VALUES ({$match_number},'{$team_number}',{$lift},{$lifted},{$auto},{$drive},'{$user}')";
 
                     $result = mysqli_query($conn, $q);
+
+                    $q2 = "INSERT INTO data (match_num, team_num, lift, lifted, auto, drive, user)
+                        VALUES ({$match_number},'{$team_number2}',{$lift2},{$lifted2},{$auto2},{$drive2}, '{$login_session}')";
+                    $result2 = mysqli_query($conn, $q2);
 
 
                     $q = "DELETE FROM `data_tmp` WHERE `id` = $id";
@@ -115,8 +126,6 @@
           <div class='col-md-1'>Drive</div>
           <div class='col-md-1'>User</div>
           <div class='col-md-2'>Score</div>
-          <div class='col-md-1'>Ok</div>
-          <div class='col-md-1'>Cancel</div>
 
         </div>
 
@@ -133,6 +142,20 @@
               echo "<div class='col-md-1'><span>" . $row['drive'] . "</span></div>";
               echo "<div class='col-md-1'><span>" . $row['user'] . "</span></div>";
               echo "<div class='col-md-2'><input name='score'></div>";
+              echo "</div>";
+
+              echo "<div class='row'>";
+              echo "<div class='col-md-1'></div>";
+              echo "<div class='col-md-1'></div>";
+
+              echo "<div class='col-md-1'><span>" . $row['team_num2'] . "</span></div>";
+              echo "<div class='col-md-1'><span>" . $row['lift2'] . "</span></div>";
+              echo "<div class='col-md-1'><span>" . $row['lifted2'] . "</span></div>";
+              echo "<div class='col-md-1'><span>" . $row['auto2'] . "</span></div>";
+              echo "<div class='col-md-1'><span>" . $row['drive2'] . "</span></div>";
+
+              echo "<div class='col-md-1'></div>";
+
               echo "<input type='hidden' name='id' value='" . $row['id']."'>";
               
               echo "<div class='col-md-1'> 
@@ -144,6 +167,7 @@
               </div>";
 
               echo "</form> </div>";
+              echo "<hr>";
             }
           ?>
       </div>
