@@ -117,7 +117,7 @@
             graph.bulletBorderAlpha = 1;
             graph.bulletBorderThickness = 2;
             graph.lineThickness = 4;
-            graph.balloonText = "Match: [[category]]<br>Auto:[[value]]%";
+            graph.balloonText = "Match: [[category]]<br>Auto:[[value]]";
             chart.addGraph(graph);
 
 
@@ -132,7 +132,7 @@
             graph1.bulletBorderAlpha = 1;
             graph1.bulletBorderThickness = 2;
             graph1.lineThickness = 4;
-            graph1.balloonText = "Match: [[category]]<br>Drive:[[value]]%";
+            graph1.balloonText = "Match: [[category]]<br>Drive:[[value]]";
             chart.addGraph(graph1);
 
             graph = new AmCharts.AmGraph();
