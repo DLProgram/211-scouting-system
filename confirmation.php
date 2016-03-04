@@ -33,6 +33,8 @@
     <?php include("navbar.php") ?>
       <div class="container" >
         <div id="top"></div>
+        
+        
         <?php 
           if(isset($_GET["submit"])){
             if($color == "admin"){
